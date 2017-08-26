@@ -8,6 +8,6 @@ $ cordova prepare
 
 Install the cordova-plugin-google-maps version 2 (latest).
 
-Then, run ```bash $ ionic serve ```.
+Then, run ```ionic serve ```.
 
-Run ```bash $ cordova run android ``` to install the app into your device.
+Run ```cordova run android ``` to install the app into your device.
