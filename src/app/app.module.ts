@@ -1,7 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { GoogleMaps } from '@ionic-native/google-maps';
+import { GoogleMaps, HtmlInfoWindow } from '@ionic-native/google-maps';
 import { MyApp } from './app.component';
 
 import { SuperTabsModule } from 'ionic2-super-tabs';
@@ -40,6 +40,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   ],
   providers: [
     GoogleMaps,
+    HtmlInfoWindow,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
