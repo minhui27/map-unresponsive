@@ -1,6 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-
-import { SuperTabsConfig, SuperTabs } from 'ionic2-super-tabs';
+import { Component } from '@angular/core';
 
 import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
@@ -11,8 +9,6 @@ import { DirectoryPage } from '../directory/directory';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-	@ViewChild(SuperTabs) superTabs: SuperTabs;
-	config: SuperTabsConfig;
 
   tab1Root = HomePage;
   tab2Root = AboutPage;
@@ -20,14 +16,5 @@ export class TabsPage {
   directoryRoot = DirectoryPage;
 
   constructor() {
-
-  	this.config = {
-      sideMenu: 'left',
-      shortSwipeDuration: 9999,
-      dragThreshold: 100
-      // prevent tab drag event fired
-      // dragThreshold: window.screen.width + 100,
-  };
-
   }
 }

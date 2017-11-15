@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 
-import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent, HtmlInfoWindow } from '@ionic-native/google-maps';
+import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent, Marker } from '@ionic-native/google-maps';
 
 @Component({
   selector: 'page-directory',
@@ -11,6 +11,12 @@ export class DirectoryPage {
 
   map: GoogleMap;
   mapElement: HTMLElement;
+
+  cardOnMapEle: HTMLElement;
+  restCardOnMapEle: HTMLElement;
+  showRestCard: boolean = false;
+  restCardInfo: any;
+
   constructor(private googleMaps: GoogleMaps, public platform: Platform) {    
   }
 
@@ -35,6 +41,10 @@ export class DirectoryPage {
     };
     this.map = this.googleMaps.create(element, mapOptions);
 
+    if (!this.cardOnMapEle) {
+      this.cardOnMapEle = document.getElementById('trigger-card-on-map');
+    }
+
     // Wait the MAP_READY before using any methods.
     this.map.one(GoogleMapsEvent.MAP_READY)
     .then(() => {
@@ -50,7 +60,6 @@ export class DirectoryPage {
     this.map.clear();
 
     this.map.addMarkerCluster({
-      // boundsDraw: false,
       markers: this.dummyData(),
       icons: [
         {min: 5, max: 100, url: 'www/assets/icon/marker-blue.png', anchor: {x: 16, y: 16}},
@@ -59,37 +68,28 @@ export class DirectoryPage {
         {min: 1000, max: 5000, url: 'www/assets/icon/marker-orange.png', anchor: {x: 32, y: 32}}
       ]
     }).then((markerCluster) => {
-      const htmlInfoWnd = new HtmlInfoWindow();
-
-      markerCluster.on(GoogleMapsEvent.MARKER_CLICK).subscribe((marker) => {
-        console.log(marker);
-
-        const markerInfo = marker;
-        const html = [
-          '<div id=\'html-info-window\' style=\'width: 250px; min-height: 80px;\'>',
-          '<div style=\'font-size: 1.0em;\'>' + markerInfo.get('name') + '</div>'
-        ];
-        if (markerInfo.get('address')) {
-          html.push('<div style=\'font-size: 0.8em;\'>' + markerInfo.get('address') + '</div>');
-        }
-        if (markerInfo.get('phone')) {
-          html.push('<div style=\'font-size: 0.8em;\'>' + markerInfo.get('phone') + '</div>');
-        }
-        html.push('</div>');
-        htmlInfoWnd.setContent(html.join(''));
-        htmlInfoWnd.open(markerInfo);
-      });
-
-      this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe(() => {
-        htmlInfoWnd.close();
-      });
-
-      this.map.on(GoogleMapsEvent.CAMERA_MOVE_START).subscribe(() => {
-        htmlInfoWnd.close();
+      markerCluster.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
+        const marker: Marker = params[1];
+        console.log('marker click...', marker);
+        this.showRestCard = true;
+        this.restCardInfo = {
+          id: 0,
+          name: marker.get('name'),
+          address: marker.get('address')
+        };
+        this.cardOnMapEle.click();
       });
     });
   }
 
+  showRestCardFn() {
+    console.log('trigger');
+  }
+
+  goRestaurant(restId, restName) {
+    this.showRestCard = false;
+    alert('rest card should close.. ' + restName);
+  }
 
   dummyData() {
     return [

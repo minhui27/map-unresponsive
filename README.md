@@ -4,7 +4,7 @@
 $ npm install -g ionic cordova
 $ npm install
 $ ionic cordova platform add android
-$ cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="<YOUR KEY>" --variable API_KEY_FOR_IOS="<YOUR KEY>" --nofetch
+$ cordova plugin add https://github.com/mapsplugin/cordova-plugin-googlemaps#multiple_maps --variable API_KEY_FOR_ANDROID=".."  --variable API_KEY_FOR_IOS=".."
 ```
 
 Then, run ```ionic serve ``` to get started.

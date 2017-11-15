@@ -7,5 +7,17 @@
 </ion-header>
 
 <ion-content>
-  <div #map id="map" style="height:100%; width: 100%;"></div>
+  <div #map id="map">
+  	<div id="trigger-card-on-map" (click)="showRestCardFn()"></div>
+    <div [style.display]="showRestCard ? 'block' : 'none'" id="card-on-map">
+        <button ion-item *ngIf="restCardInfo" class="item-white" (click)="goRestaurant(restCardInfo.id, restCardInfo.name)">
+            <h2>
+                {{restCardInfo.name}}
+            </h2>
+            <p>
+                {{restCardInfo.address}}
+            </p>
+        </button>
+    </div>
+  </div>
 </ion-content>
