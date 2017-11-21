@@ -3,6 +3,8 @@ import { Platform } from 'ionic-angular';
 
 import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent, Marker } from '@ionic-native/google-maps';
 
+declare let cordova: any;
+
 @Component({
   selector: 'page-directory',
   templateUrl: 'directory.html'
@@ -71,7 +73,6 @@ export class DirectoryPage {
       markerCluster.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
         const marker: Marker = params[1];
         console.log('marker click...', marker);
-        this.showRestCard = true;
         this.restCardInfo = {
           id: 0,
           name: marker.get('name'),
@@ -83,7 +84,8 @@ export class DirectoryPage {
   }
 
   showRestCardFn() {
-    console.log('trigger');
+    this.showRestCard = true;
+    cordova.fireDocumentEvent('plugin_touch', {});
   }
 
   goRestaurant(restId, restName) {
