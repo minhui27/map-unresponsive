@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, NavController, App, IonicPage } from 'ionic-angular';
 
 import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent, Marker } from '@ionic-native/google-maps';
 
 declare let cordova: any;
+
+@IonicPage()
 
 @Component({
   selector: 'page-directory',
@@ -19,7 +21,15 @@ export class DirectoryPage {
   showRestCard: boolean = false;
   restCardInfo: any;
 
-  constructor(private googleMaps: GoogleMaps, public platform: Platform) {    
+  rootNav: NavController;
+
+  constructor(
+    private googleMaps: GoogleMaps,
+    public platform: Platform,
+    public navCtrl: NavController,
+    public appCtrl: App) {
+    this.rootNav = this.appCtrl.getRootNavs()[0];
+    console.log('directory page...');
   }
 
   ngAfterViewInit() {
@@ -43,10 +53,6 @@ export class DirectoryPage {
     };
     this.map = this.googleMaps.create(element, mapOptions);
 
-    if (!this.cardOnMapEle) {
-      this.cardOnMapEle = document.getElementById('trigger-card-on-map');
-    }
-
     // Wait the MAP_READY before using any methods.
     this.map.one(GoogleMapsEvent.MAP_READY)
     .then(() => {
@@ -56,7 +62,6 @@ export class DirectoryPage {
 
     });
   }
-
 
   addMarkerCluster() {
     this.map.clear();
@@ -71,6 +76,7 @@ export class DirectoryPage {
       ]
     }).then((markerCluster) => {
       markerCluster.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
+        this.showRestCard = false;
         const marker: Marker = params[1];
         console.log('marker click...', marker);
         this.restCardInfo = {
@@ -78,19 +84,39 @@ export class DirectoryPage {
           name: marker.get('name'),
           address: marker.get('address')
         };
+
+        if (!this.cardOnMapEle) {
+          this.cardOnMapEle = document.getElementById('trigger-card-on-map');
+        }
+
         this.cardOnMapEle.click();
       });
+    });
+
+    // this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe(() => {
+    //   if (this.showRestCard) {
+    //     if (!this.cardOnMapEle) {
+    //       this.cardOnMapEle = document.getElementById('trigger-card-on-map');
+    //     }
+    //     this.cardOnMapEle.click();
+    //   }
+    // });
+
+    this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
+      cordova.fireDocumentEvent('plugin_touch', {});
     });
   }
 
   showRestCardFn() {
-    this.showRestCard = true;
+    this.showRestCard = !this.showRestCard;
     cordova.fireDocumentEvent('plugin_touch', {});
   }
 
-  goRestaurant(restId, restName) {
+  goRestaurant(info) {
+    console.log('goRestaurant fn...', info);
     this.showRestCard = false;
-    alert('rest card should close.. ' + restName);
+    // alert('rest card should close.. ' + info.name);
+    this.rootNav.push('RestaurantPage', {item: info});
   }
 
   dummyData() {

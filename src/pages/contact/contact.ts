@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, App } from 'ionic-angular';
 
 @Component({
   selector: 'page-contact',
@@ -7,8 +7,14 @@ import { NavController } from 'ionic-angular';
 })
 export class ContactPage {
 
-  constructor(public navCtrl: NavController) {
+	rootNav: NavController;
 
+  constructor(public navCtrl: NavController, public appCtrl: App) {
+  	this.rootNav = this.appCtrl.getRootNavs()[0];
+  }
+
+  goRestaurant() {
+  	this.rootNav.push('RestaurantPage', {item: {name: 'Testing', phone: '0123456789', address: 'Test address...'}});
   }
 
 }

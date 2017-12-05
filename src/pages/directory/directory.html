@@ -10,7 +10,7 @@
   <div #map id="map">
   	<div id="trigger-card-on-map" (click)="showRestCardFn()"></div>
     <div [style.display]="showRestCard ? 'block' : 'none'" id="card-on-map">
-        <button ion-item *ngIf="restCardInfo" class="item-white" (click)="goRestaurant(restCardInfo.id, restCardInfo.name)">
+        <button *ngIf="restCardInfo" ion-item class="item-white" (click)="goRestaurant(restCardInfo)">
             <h2>
                 {{restCardInfo.name}}
             </h2>
