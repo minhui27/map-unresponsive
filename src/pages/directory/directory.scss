@@ -1,16 +1,22 @@
-#map {
-	width: 100%;
-	transition: .4s;
-	height: 100%;
-
-	#card-on-map {
-		position: absolute;
-		bottom: 0px;
+page-directory {
+	#map_canvas {
 		width: 100%;
-		padding: 6px;
-		z-index: 101;
-		.item-white {
-			background-color: white;
+		// transition: .4s;
+		height: 100%;
+		position: relative;
+		left: 0;
+		display: block;
+		z-index: 99;
+
+		#card-on-map {
+			position: absolute;
+			bottom: 0px;
+			width: 100%;
+			padding: 6px;
+			z-index: 101;
+			.item-white {
+				background-color: white;
+			}
 		}
 	}
 }

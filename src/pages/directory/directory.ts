@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { Platform, NavController, App, IonicPage } from 'ionic-angular';
+import { Platform, NavController, App } from 'ionic-angular';
 
 import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent, Marker } from '@ionic-native/google-maps';
 
 declare let cordova: any;
-
-@IonicPage()
 
 @Component({
   selector: 'page-directory',
@@ -14,7 +12,6 @@ declare let cordova: any;
 export class DirectoryPage {
 
   map: GoogleMap;
-  mapElement: HTMLElement;
 
   cardOnMapEle: HTMLElement;
   restCardOnMapEle: HTMLElement;
@@ -29,18 +26,17 @@ export class DirectoryPage {
     public navCtrl: NavController,
     public appCtrl: App) {
     this.rootNav = this.appCtrl.getRootNavs()[0];
-    console.log('directory page...');
   }
 
-  ngAfterViewInit() {
+  ionViewDidLoad() {
   	this.platform.ready().then(() => {
-      this.loadMap();
+      setTimeout(() => {
+        this.loadMap();
+      }, 1000);
     });
   }
 
- loadMap() {
-    let element: HTMLElement = document.getElementById('map');
-
+  loadMap() {
     let mapOptions: GoogleMapOptions = {
       camera: {
         target: {
@@ -51,7 +47,7 @@ export class DirectoryPage {
         tilt: 30
       }
     };
-    this.map = this.googleMaps.create(element, mapOptions);
+    this.map = this.googleMaps.create('map_canvas', mapOptions);
 
     // Wait the MAP_READY before using any methods.
     this.map.one(GoogleMapsEvent.MAP_READY)
