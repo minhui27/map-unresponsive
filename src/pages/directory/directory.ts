@@ -30,9 +30,7 @@ export class DirectoryPage {
 
   ionViewDidLoad() {
   	this.platform.ready().then(() => {
-      setTimeout(() => {
-        this.loadMap();
-      }, 1000);
+      this.loadMap();
     });
   }
 
