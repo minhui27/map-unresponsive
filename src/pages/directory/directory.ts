@@ -110,8 +110,8 @@ export class DirectoryPage {
     console.log('goRestaurant fn...', info);
     this.showRestCard = false;
     // alert('rest card should close.. ' + info.name);
-    this.rootNav.push('RestaurantPage', {item: info});    // not navigate from root component
-    // this.navCtrl.push('RestaurantPage', {item: info});       // navigate from root component
+    this.rootNav.push('RestaurantPage', {item: info});    // navigate from root component
+    // this.navCtrl.push('RestaurantPage', {item: info});       // navigate from tab (current tab, ie. directory tab)
   }
 
   dummyData() {
