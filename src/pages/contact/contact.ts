@@ -14,7 +14,16 @@ export class ContactPage {
   }
 
   goRestaurant() {
-  	this.rootNav.push('RestaurantPage', {item: {name: 'Testing', phone: '0123456789', address: 'Test address...'}});
+  	this.rootNav.push('RestaurantPage',
+  		{
+  			item: {
+  				name: 'Testing',
+  				phone: '0123456789',
+  				address: 'Test address...',
+  				position: {lat: 21.382314, lng: -157.933097}
+  			}
+  		}
+  	);
   }
 
 }

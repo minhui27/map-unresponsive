@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, NavController, App } from 'ionic-angular';
+import { Platform, NavController, App, Events } from 'ionic-angular';
 
 import { GoogleMaps, GoogleMap, GoogleMapOptions, GoogleMapsEvent, Marker } from '@ionic-native/google-maps';
 
@@ -24,8 +24,15 @@ export class DirectoryPage {
     private googleMaps: GoogleMaps,
     public platform: Platform,
     public navCtrl: NavController,
-    public appCtrl: App) {
+    public appCtrl: App,
+    public events: Events) {
     this.rootNav = this.appCtrl.getRootNavs()[0];
+
+    this.events.subscribe('BackToDirectoryPage', (res)=> {
+      if (this.map && (res === true || res === false)) {
+        this.map.setClickable(res);
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -76,7 +83,8 @@ export class DirectoryPage {
         this.restCardInfo = {
           id: 0,
           name: marker.get('name'),
-          address: marker.get('address')
+          address: marker.get('address'),
+          position: marker.get('position')
         };
 
         if (!this.cardOnMapEle) {
@@ -87,14 +95,14 @@ export class DirectoryPage {
       });
     });
 
-    // this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe(() => {
-    //   if (this.showRestCard) {
-    //     if (!this.cardOnMapEle) {
-    //       this.cardOnMapEle = document.getElementById('trigger-card-on-map');
-    //     }
-    //     this.cardOnMapEle.click();
-    //   }
-    // });
+    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe(() => {
+      if (this.showRestCard) {
+        if (!this.cardOnMapEle) {
+          this.cardOnMapEle = document.getElementById('trigger-card-on-map');
+        }
+        this.cardOnMapEle.click();
+      }
+    });
 
     this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
       cordova.fireDocumentEvent('plugin_touch', {});
@@ -107,9 +115,7 @@ export class DirectoryPage {
   }
 
   goRestaurant(info) {
-    console.log('goRestaurant fn...', info);
     this.showRestCard = false;
-    // alert('rest card should close.. ' + info.name);
     this.rootNav.push('RestaurantPage', {item: info});    // navigate from root component
     // this.navCtrl.push('RestaurantPage', {item: info});       // navigate from tab (current tab, ie. directory tab)
   }

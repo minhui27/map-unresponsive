@@ -2,7 +2,7 @@ page-directory {
 	#map_canvas {
 		width: 100%;
 		// transition: .4s;
-		height: 100%;
+		height: calc(100% - 50px);
 		position: relative;
 		left: 0;
 		display: block;

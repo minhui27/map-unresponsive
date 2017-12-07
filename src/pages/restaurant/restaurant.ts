@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, IonicPage, Events } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -9,9 +9,28 @@ import { NavController, NavParams, IonicPage } from 'ionic-angular';
 export class RestaurantPage {
 	item: object;
 
-  constructor(public navCtrl: NavController, params: NavParams) {
+  constructor(public navCtrl: NavController, public events: Events, params: NavParams) {
   	this.item = params.get('item');
-  	console.log(this.item);
+  }
+
+  ionViewWillEnter() {
+  	this.events.publish('BackToDirectoryPage', false);
+  }
+
+  ionViewDidLeave() {
+  	this.events.publish('BackToDirectoryPage', true);
+  }
+
+  viewLocation() {
+  	this.navCtrl.push('LocationPage',
+  		{
+  			item: {
+		      lat: this.item['position']['lat'],
+		      lng: this.item['position']['lng'],
+		      name: this.item['name']
+		  	}
+    	}
+  	);
   }
 
 }
